@@ -17,11 +17,14 @@ tag = "v1"
 new_classes = ["ConversationMemory"]
 
 # KV namespace for additional storage
+# Note: These IDs are safe to commit - they're just namespace identifiers
 [[kv_namespaces]]
 binding = "TRANSLATION_CACHE"
-id = "preview_id"
-preview_id = "preview_id"
+id = "a17adbde547c4560ae2e676731a9c7c3"
+preview_id = "71c5e24cecdb457d96893c91d77170b7"
 
 # Environment variables
+# For local dev, use .dev.vars file (not committed to git)
+# For production, set in Cloudflare Dashboard
 [vars]
 ENVIRONMENT = "production"

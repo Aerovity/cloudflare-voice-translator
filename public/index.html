@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cloudflare Voice-to-Voice Translator</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🌍 Voice-to-Voice Translator</h1>
+            <h1><i data-lucide="languages"></i> Voice-to-Voice Translator</h1>
             <p class="subtitle">Powered by Cloudflare Workers AI & Llama 3.3</p>
         </header>
 
@@ -53,7 +54,7 @@
 
                 <div class="recording-section">
                     <button id="recordBtn" class="record-btn">
-                        <span class="icon">🎤</span>
+                        <i data-lucide="mic" class="icon"></i>
                         <span class="text">Start Recording</span>
                     </button>
                     <div id="recordingStatus" class="status"></div>
@@ -69,16 +70,19 @@
                         <h3>Translated Text</h3>
                         <div id="translatedText" class="text-display">Translation will appear here...</div>
                         <button id="speakBtn" class="speak-btn" disabled>
-                            <span class="icon">🔊</span>
+                            <i data-lucide="volume-2" class="icon"></i>
                             <span class="text">Speak Translation</span>
                         </button>
                     </div>
                 </div>
 
                 <div class="history-section">
-                    <h3>Translation History</h3>
+                    <h3><i data-lucide="history"></i> Translation History</h3>
                     <div id="historyList" class="history-list"></div>
-                    <button id="clearHistoryBtn" class="clear-btn">Clear History</button>
+                    <button id="clearHistoryBtn" class="clear-btn">
+                        <i data-lucide="trash-2"></i>
+                        Clear History
+                    </button>
                 </div>
             </div>
         </main>
@@ -94,5 +98,9 @@
     </div>
 
     <script src="app.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
 </body>
 </html>

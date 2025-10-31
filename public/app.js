@@ -1,6 +1,6 @@
 // Configuration
-const API_BASE_URL = window.location.hostname === 'localhost'
-    ? 'http://localhost:8787'
+const API_BASE_URL = window.location.protocol === 'file:' || window.location.hostname === 'localhost'
+    ? 'http://127.0.0.1:8787'
     : 'https://voice-translator.YOUR-SUBDOMAIN.workers.dev';
 
 const SESSION_ID = `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
@@ -34,13 +34,13 @@ document.addEventListener('DOMContentLoaded', () => {
 // Check browser support for required APIs
 function checkBrowserSupport() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        showStatus('❌ Your browser does not support audio recording', 'error');
+        showStatus('Your browser does not support audio recording', 'error');
         recordBtn.disabled = true;
         return false;
     }
 
     if (!('speechSynthesis' in window)) {
-        showStatus('⚠️ Text-to-speech not supported in your browser', 'warning');
+        showStatus('Text-to-speech not supported in your browser', 'warning');
     }
 
     return true;
@@ -86,12 +86,13 @@ async function startRecording() {
         isRecording = true;
 
         recordBtn.classList.add('recording');
-        recordBtn.querySelector('.text').textContent = 'Stop Recording';
-        showStatus('🎤 Recording... Click again to stop', 'recording');
+        recordBtn.innerHTML = '<i data-lucide="mic-off" class="icon"></i><span class="text">Stop Recording</span>';
+        lucide.createIcons();
+        showStatus('Recording... Click again to stop', 'recording');
 
     } catch (error) {
         console.error('Error starting recording:', error);
-        showStatus('❌ Could not access microphone', 'error');
+        showStatus('Could not access microphone', 'error');
     }
 }
 
@@ -102,8 +103,9 @@ function stopRecording() {
         isRecording = false;
 
         recordBtn.classList.remove('recording');
-        recordBtn.querySelector('.text').textContent = 'Start Recording';
-        showStatus('⏸️ Processing audio...', 'processing');
+        recordBtn.innerHTML = '<i data-lucide="mic" class="icon"></i><span class="text">Start Recording</span>';
+        lucide.createIcons();
+        showStatus('Processing audio...', 'processing');
     }
 }
 
@@ -111,7 +113,7 @@ function stopRecording() {
 async function processAudio(audioBlob) {
     try {
         // Step 1: Transcribe audio
-        showStatus('🔄 Transcribing speech...', 'processing');
+        showStatus('Transcribing speech...', 'processing');
         const transcription = await transcribeAudio(audioBlob);
 
         if (!transcription || !transcription.text) {
@@ -119,10 +121,10 @@ async function processAudio(audioBlob) {
         }
 
         originalText.textContent = transcription.text;
-        showStatus('✅ Transcription complete', 'success');
+        showStatus('Transcription complete', 'success');
 
         // Step 2: Translate text
-        showStatus('🔄 Translating...', 'processing');
+        showStatus('Translating...', 'processing');
         const translation = await translateText(
             transcription.text,
             sourceLang.value === 'auto' ? transcription.language : sourceLang.value,
@@ -137,14 +139,14 @@ async function processAudio(audioBlob) {
         speakBtn.disabled = false;
 
         const cacheMsg = translation.cached ? ' (cached)' : '';
-        showStatus(`✅ Translation complete${cacheMsg}`, 'success');
+        showStatus(`Translation complete${cacheMsg}`, 'success');
 
         // Add to history display
         addToHistoryDisplay(transcription.text, translation.translatedText);
 
     } catch (error) {
         console.error('Error processing audio:', error);
-        showStatus(`❌ Error: ${error.message}`, 'error');
+        showStatus(`Error: ${error.message}`, 'error');
     }
 }
 
@@ -230,12 +232,12 @@ function speakTranslation() {
             console.error('Speech synthesis error:', event);
             speakBtn.querySelector('.text').textContent = 'Speak Translation';
             speakBtn.disabled = false;
-            showStatus('❌ Speech synthesis failed', 'error');
+            showStatus('Speech synthesis failed', 'error');
         };
 
         window.speechSynthesis.speak(utterance);
     } else {
-        showStatus('❌ Text-to-speech not supported', 'error');
+        showStatus('Text-to-speech not supported', 'error');
     }
 }
 
@@ -308,7 +310,7 @@ async function loadHistory() {
 // Clear history
 function clearHistory() {
     historyList.innerHTML = '<p style="color: #999; text-align: center;">No translations yet</p>';
-    showStatus('🗑️ History cleared', 'success');
+    showStatus('History cleared', 'success');
 }
 
 // Show status message
