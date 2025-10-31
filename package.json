@@ -1,0 +1,25 @@
+{
+  "name": "cloudflare-voice-translator",
+  "version": "1.0.0",
+  "description": "Voice-to-Voice translator using Cloudflare Workers AI and Llama 3.3",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "deploy:pages": "wrangler pages deploy public"
+  },
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "ai",
+    "translation",
+    "voice"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241127.0",
+    "wrangler": "^3.91.0",
+    "typescript": "^5.7.2"
+  }
+}
